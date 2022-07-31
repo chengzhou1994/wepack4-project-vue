@@ -3,6 +3,8 @@ const path = require('path') //引入核心内置模块path,用户获取文件�
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 //清除上次打包文件插件
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+//从js抽离出css问单独文件插件
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
   mode: 'production',
   entry: './src/main.js', // 打包入口：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始
@@ -18,17 +20,17 @@ module.exports = {
       // 处理 css
       {
         test: /\.(css)$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
       },
       // 处理 less
       {
         test: /\.(less)$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader']
       },
       // 处理scss
       {
         test: /\.(scss)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
       },
       //处理图片
       {
@@ -95,6 +97,13 @@ module.exports = {
         collapseWhitespace: true //折叠html为一行
       }
     }),
-    new CleanWebpackPlugin() //清除上次打包文件插件
+    new CleanWebpackPlugin(), //清除上次打包文件插件
+    //从js中分离出css
+    // https://stackoverflow.com/questions/68546117/typeerror-invalid-value-used-in-weak-set-while-build-using-webpack
+    // 降级版本MiniCssExtractPlugin version 1.6.2
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash:8].css',
+      chunkFilename: '[id].css'
+    })
   ]
 }
