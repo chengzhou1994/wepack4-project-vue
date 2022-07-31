@@ -16,12 +16,12 @@ module.exports = {
       // 处理 css
       {
         test: /\.(css)$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader']
       },
       // 处理 less
       {
         test: /\.(less)$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader']
       },
       // 处理scss
       {
