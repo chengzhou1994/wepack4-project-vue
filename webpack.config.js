@@ -29,6 +29,58 @@ module.exports = {
       {
         test: /\.(scss)$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      //处理图片
+      {
+        //正则匹配图片格式
+        test: /\.(jpe?g|png|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              //限制文件大小
+              limit: 10240,
+              //超出上面限制之后使用的loader ext是文件本来的扩展名
+              name: 'image/[name].[hash:8].[ext]'
+            }
+          }
+        ]
+      },
+      //处理媒体文件
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|acc)(\?.*)?$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10240,
+              fallback: {
+                loader: 'file-loader',
+                options: {
+                  name: 'media/[name].[hash:8].[ext]'
+                }
+              }
+            }
+          }
+        ]
+      },
+      //处理字体文件
+      {
+        test: /\.(woff2|eot|ttf|otf)(\?.*)?$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10240,
+              fallback: {
+                loader: 'file-loader',
+                options: {
+                  name: 'font/[name].[hash:8].[ext]'
+                }
+              }
+            }
+          }
+        ]
       }
     ]
   }, // 模块配置：配置loader（处理非 JavaScript 文件，比如 less、sass、jsx、图片等等）等
