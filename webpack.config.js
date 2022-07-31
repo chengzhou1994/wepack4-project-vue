@@ -1,6 +1,8 @@
 const path = require('path') //引入核心内置模块path,用户获取文件路径等
 // 我们不希望打包一次，就新建一次html文件来引用打包后的文件，这样显得不智能或者说当你打包的文件名修改后，引用路径就会出错。
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+//清除上次打包文件插件
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
   mode: 'production',
   entry: './src/main.js', // 打包入口：指示 webpack 应该使用哪个模块，来作为构建其内部依赖图的开始
@@ -40,6 +42,7 @@ module.exports = {
         removeAttributeQuotes: true, //删除双引号
         collapseWhitespace: true //折叠html为一行
       }
-    })
+    }),
+    new CleanWebpackPlugin() //清除上次打包文件插件
   ]
 }
